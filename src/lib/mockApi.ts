@@ -11,9 +11,16 @@ export type Patient = {
   id: string
   name: string
   age: number
+  gender: 'Male' | 'Female'
   condition: string
   status: 'Active' | 'Critical' | 'Stable'
   time: string
+  doctor: string
+  lastVisit: string
+  nextAppointment: string
+  bloodType: string
+  phone: string
+  email: string
 }
 
 export const mockApi = {
@@ -30,11 +37,18 @@ export const mockApi = {
   async getPatients(): Promise<Patient[]> {
     await delay(1100)
     return [
-      { id: 'P-1042', name: 'Sarah Johnson',  age: 45, condition: 'Hypertension',    status: 'Active',   time: '9:00 AM'  },
-      { id: 'P-1041', name: 'Michael Chen',   age: 62, condition: 'Diabetes Type 2', status: 'Critical', time: '10:30 AM' },
-      { id: 'P-1040', name: 'Emily Davis',    age: 34, condition: 'Asthma',          status: 'Stable',   time: '11:00 AM' },
-      { id: 'P-1039', name: 'Robert Wilson',  age: 58, condition: 'Cardiac Care',    status: 'Active',   time: '2:00 PM'  },
-      { id: 'P-1038', name: 'Maria Garcia',   age: 29, condition: 'Prenatal Care',   status: 'Stable',   time: '3:30 PM'  },
+      { id: 'P-1042', name: 'Sarah Johnson',   age: 45, gender: 'Female', condition: 'Hypertension',      status: 'Active',   time: '9:00 AM',  doctor: 'Dr. Alan Wright',  lastVisit: 'Apr 20, 2025', nextAppointment: 'May 10, 2025', bloodType: 'O+',  phone: '(555) 101-2030', email: 'sarah.j@email.com'    },
+      { id: 'P-1041', name: 'Michael Chen',    age: 62, gender: 'Male',   condition: 'Diabetes Type 2',   status: 'Critical', time: '10:30 AM', doctor: 'Dr. Priya Nair',   lastVisit: 'Apr 28, 2025', nextAppointment: 'May 05, 2025', bloodType: 'A+',  phone: '(555) 202-3141', email: 'mchen@email.com'       },
+      { id: 'P-1040', name: 'Emily Davis',     age: 34, gender: 'Female', condition: 'Asthma',            status: 'Stable',   time: '11:00 AM', doctor: 'Dr. James Hooper', lastVisit: 'Mar 15, 2025', nextAppointment: 'Jun 15, 2025', bloodType: 'B+',  phone: '(555) 303-4252', email: 'emily.d@email.com'     },
+      { id: 'P-1039', name: 'Robert Wilson',   age: 58, gender: 'Male',   condition: 'Cardiac Care',      status: 'Active',   time: '2:00 PM',  doctor: 'Dr. Alan Wright',  lastVisit: 'Apr 25, 2025', nextAppointment: 'May 15, 2025', bloodType: 'AB-', phone: '(555) 404-5363', email: 'r.wilson@email.com'    },
+      { id: 'P-1038', name: 'Maria Garcia',    age: 29, gender: 'Female', condition: 'Prenatal Care',     status: 'Stable',   time: '3:30 PM',  doctor: 'Dr. Susan Lee',    lastVisit: 'Apr 22, 2025', nextAppointment: 'May 08, 2025', bloodType: 'O-',  phone: '(555) 505-6474', email: 'mgarcia@email.com'     },
+      { id: 'P-1037', name: 'James Thompson',  age: 71, gender: 'Male',   condition: 'Arthritis',         status: 'Stable',   time: '4:00 PM',  doctor: 'Dr. Priya Nair',   lastVisit: 'Apr 10, 2025', nextAppointment: 'May 20, 2025', bloodType: 'A-',  phone: '(555) 606-7585', email: 'jthompson@email.com'   },
+      { id: 'P-1036', name: 'Linda Martinez',  age: 52, gender: 'Female', condition: 'Chronic Migraine',  status: 'Active',   time: '9:30 AM',  doctor: 'Dr. James Hooper', lastVisit: 'Apr 18, 2025', nextAppointment: 'May 12, 2025', bloodType: 'B-',  phone: '(555) 707-8696', email: 'l.martinez@email.com'  },
+      { id: 'P-1035', name: 'David Kim',       age: 40, gender: 'Male',   condition: 'Kidney Disease',    status: 'Critical', time: '11:30 AM', doctor: 'Dr. Susan Lee',    lastVisit: 'Apr 29, 2025', nextAppointment: 'May 06, 2025', bloodType: 'O+',  phone: '(555) 808-9707', email: 'dkim@email.com'        },
+      { id: 'P-1034', name: 'Patricia Moore',  age: 66, gender: 'Female', condition: 'Hypertension',      status: 'Active',   time: '1:00 PM',  doctor: 'Dr. Alan Wright',  lastVisit: 'Apr 14, 2025', nextAppointment: 'May 28, 2025', bloodType: 'AB+', phone: '(555) 909-0818', email: 'pmoore@email.com'      },
+      { id: 'P-1033', name: 'William Turner',  age: 48, gender: 'Male',   condition: 'Depression',        status: 'Stable',   time: '2:30 PM',  doctor: 'Dr. Priya Nair',   lastVisit: 'Apr 05, 2025', nextAppointment: 'May 19, 2025', bloodType: 'A+',  phone: '(555) 010-1929', email: 'wturner@email.com'     },
+      { id: 'P-1032', name: 'Jennifer Adams',  age: 37, gender: 'Female', condition: 'Thyroid Disorder',  status: 'Stable',   time: '4:30 PM',  doctor: 'Dr. Susan Lee',    lastVisit: 'Mar 28, 2025', nextAppointment: 'Jun 01, 2025', bloodType: 'O+',  phone: '(555) 111-2030', email: 'jadams@email.com'      },
+      { id: 'P-1031', name: 'Charles Brown',   age: 55, gender: 'Male',   condition: 'COPD',              status: 'Critical', time: '10:00 AM', doctor: 'Dr. James Hooper', lastVisit: 'Apr 30, 2025', nextAppointment: 'May 03, 2025', bloodType: 'B+',  phone: '(555) 212-3141', email: 'cbrown@email.com'      },
     ]
   },
 }

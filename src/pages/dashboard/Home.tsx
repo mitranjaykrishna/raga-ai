@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   HiOutlineUsers,
   HiOutlineCalendar,
@@ -10,6 +10,7 @@ import { fetchStats } from '../../store/slices/dashboardSlice'
 import { fetchPatients } from '../../store/slices/patientsSlice'
 import { auth } from '../../lib/firebase'
 import type { Patient } from '../../lib/mockApi'
+import PatientDialog from '../../components/PatientDialog'
 
 const STATUS_CLS: Record<Patient['status'], string> = {
   Active:   'bg-blue-50 text-blue-700',
@@ -99,6 +100,8 @@ export default function DashboardHome() {
   const { stats, status: statsStatus, error: statsError }       = useAppSelector((s) => s.dashboard)
   const { list: patients, status: patientsStatus, error: patientsError } = useAppSelector((s) => s.patients)
 
+  const [selected, setSelected] = useState<Patient | null>(null)
+
   const user = auth.currentUser
   const name = user?.displayName?.split(' ')[0] ?? 'Doctor'
 
@@ -108,6 +111,8 @@ export default function DashboardHome() {
   }, [dispatch, statsStatus, patientsStatus])
 
   return (
+    <>
+    {selected && <PatientDialog patient={selected} onClose={() => setSelected(null)} />}
     <div className="space-y-6">
       {/* Header */}
       <div>
@@ -169,14 +174,14 @@ export default function DashboardHome() {
               {patientsStatus === 'loading' || patientsStatus === 'idle'
                 ? Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
                 : patients.map((p) => (
-                    <tr key={p.id} className="hover:bg-gray-50 transition-colors">
+                    <tr key={p.id} onClick={() => setSelected(p)} className="hover:bg-blue-50/40 transition-colors cursor-pointer group">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 text-xs font-semibold shrink-0">
                             {p.name.split(' ').map((n) => n[0]).join('')}
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900">{p.name}</p>
+                            <p className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">{p.name}</p>
                             <p className="text-xs text-gray-500">Age {p.age}</p>
                           </div>
                         </div>
@@ -196,5 +201,6 @@ export default function DashboardHome() {
         </div>
       </div>
     </div>
+    </>
   )
 }
