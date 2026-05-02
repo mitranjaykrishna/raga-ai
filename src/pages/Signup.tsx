@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from 'firebase/auth'
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from 'firebase/auth'
 import { FirebaseError } from 'firebase/app'
 import { auth } from '../lib/firebase'
 import GoogleIcon from '../components/GoogleIcon'
@@ -33,6 +33,14 @@ const inputCls =
 
 export default function Signup() {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) navigate('/dashboard', { replace: true })
+    })
+    return unsub
+  }, [navigate])
+
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -49,7 +57,7 @@ export default function Signup() {
     setLoading(true)
     try {
       await signInWithPopup(auth, new GoogleAuthProvider())
-      navigate('/')
+      navigate('/dashboard')
     } catch {
       setError('Google sign-up failed. Please try again.')
     } finally {
@@ -68,7 +76,7 @@ export default function Signup() {
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, password)
       await updateProfile(user, { displayName: `${firstName} ${lastName}` })
-      navigate('/')
+      navigate('/dashboard')
     } catch (err) {
       if (err instanceof FirebaseError) {
         if (err.code === 'auth/email-already-in-use') setError('An account with this email already exists.')

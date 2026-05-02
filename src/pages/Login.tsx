@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { auth } from '../lib/firebase'
 import GoogleIcon from '../components/GoogleIcon'
 
@@ -30,6 +30,14 @@ const inputCls =
 
 export default function Login() {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) navigate('/dashboard', { replace: true })
+    })
+    return unsub
+  }, [navigate])
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPw, setShowPw] = useState(false)
@@ -41,7 +49,7 @@ export default function Login() {
     setLoading(true)
     try {
       await signInWithPopup(auth, new GoogleAuthProvider())
-      navigate('/')
+      navigate('/dashboard')
     } catch {
       setError('Google sign-in failed. Please try again.')
     } finally {
@@ -55,7 +63,7 @@ export default function Login() {
     setLoading(true)
     try {
       await signInWithEmailAndPassword(auth, email, password)
-      navigate('/')
+      navigate('/dashboard')
     } catch {
       setError('Invalid email or password.')
     } finally {
