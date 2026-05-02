@@ -6,6 +6,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import DashboardHome from './pages/dashboard/Home'
+import Analytics from './pages/dashboard/Analytics'
+import Patients from './pages/dashboard/Patients'
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +30,8 @@ export const router = createBrowserRouter([
             Component: DashboardLayout,
             children: [
               { index: true, Component: DashboardHome },
+              { path: 'analytics', Component: Analytics },
+              { path: 'patients', Component: Patients },
             ],
           },
         ],

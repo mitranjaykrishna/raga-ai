@@ -1,7 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
+import dashboardReducer from './slices/dashboardSlice'
+import patientsReducer from './slices/patientsSlice'
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    dashboard: dashboardReducer,
+    patients: patientsReducer,
+  },
 })
 
 export type RootState = ReturnType<typeof store.getState>
