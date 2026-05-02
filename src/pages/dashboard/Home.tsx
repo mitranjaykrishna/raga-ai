@@ -1,4 +1,10 @@
 import { useEffect } from 'react'
+import {
+  HiOutlineUsers,
+  HiOutlineCalendar,
+  HiOutlineClipboardList,
+  HiOutlineExclamationCircle,
+} from 'react-icons/hi'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { fetchStats } from '../../store/slices/dashboardSlice'
 import { fetchPatients } from '../../store/slices/patientsSlice'
@@ -18,7 +24,7 @@ const STAT_CONFIG = [
     change: '+12% this month',
     up: true,
     iconBg: 'bg-blue-600',
-    icon: <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
+    Icon: HiOutlineUsers,
   },
   {
     key: 'todayAppointments' as const,
@@ -26,7 +32,7 @@ const STAT_CONFIG = [
     change: '+3 from yesterday',
     up: true,
     iconBg: 'bg-green-600',
-    icon: <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>,
+    Icon: HiOutlineCalendar,
   },
   {
     key: 'activeCases' as const,
@@ -34,7 +40,7 @@ const STAT_CONFIG = [
     change: '12 need review',
     up: false,
     iconBg: 'bg-amber-500',
-    icon: <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>,
+    Icon: HiOutlineClipboardList,
   },
   {
     key: 'criticalAlerts' as const,
@@ -42,7 +48,7 @@ const STAT_CONFIG = [
     change: '2 new today',
     up: false,
     iconBg: 'bg-red-600',
-    icon: <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>,
+    Icon: HiOutlineExclamationCircle,
   },
 ]
 
@@ -90,15 +96,14 @@ function RowSkeleton() {
 
 export default function DashboardHome() {
   const dispatch = useAppDispatch()
-  const { stats, status: statsStatus, error: statsError } = useAppSelector((s) => s.dashboard)
+  const { stats, status: statsStatus, error: statsError }       = useAppSelector((s) => s.dashboard)
   const { list: patients, status: patientsStatus, error: patientsError } = useAppSelector((s) => s.patients)
 
   const user = auth.currentUser
   const name = user?.displayName?.split(' ')[0] ?? 'Doctor'
 
   useEffect(() => {
-    // only fetch if not already loaded — Redux caches between navigations
-    if (statsStatus === 'idle') dispatch(fetchStats())
+    if (statsStatus === 'idle')    dispatch(fetchStats())
     if (patientsStatus === 'idle') dispatch(fetchPatients())
   }, [dispatch, statsStatus, patientsStatus])
 
@@ -118,20 +123,20 @@ export default function DashboardHome() {
           ? Array.from({ length: 4 }).map((_, i) => <StatSkeleton key={i} />)
           : statsStatus === 'failed'
           ? <p className="col-span-4 text-sm text-red-500">{statsError}</p>
-          : STAT_CONFIG.map((cfg) => (
-              <div key={cfg.key} className="bg-white rounded-xl border border-gray-200 p-5">
+          : STAT_CONFIG.map(({ key, label, change, up, iconBg, Icon }) => (
+              <div key={key} className="bg-white rounded-xl border border-gray-200 p-5">
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`w-10 h-10 ${cfg.iconBg} rounded-lg flex items-center justify-center`}>
-                    {cfg.icon}
+                  <div className={`w-10 h-10 ${iconBg} rounded-lg flex items-center justify-center`}>
+                    <Icon className="w-5 h-5 text-white" />
                   </div>
-                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${cfg.up ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                    {cfg.change}
+                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${up ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
+                    {change}
                   </span>
                 </div>
                 <p className="text-3xl font-bold text-gray-900">
-                  {stats![cfg.key].toLocaleString()}
+                  {stats![key].toLocaleString()}
                 </p>
-                <p className="text-sm text-gray-500 mt-0.5">{cfg.label}</p>
+                <p className="text-sm text-gray-500 mt-0.5">{label}</p>
               </div>
             ))}
       </div>
