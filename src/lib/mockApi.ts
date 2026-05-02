@@ -7,6 +7,17 @@ export type Stats = {
   criticalAlerts: number
 }
 
+export type MonthlyTrend = {
+  month: string
+  patients: number
+  appointments: number
+}
+
+export type DailyAppointments = {
+  day: string
+  count: number
+}
+
 export type Patient = {
   id: string
   name: string
@@ -49,6 +60,32 @@ export const mockApi = {
       { id: 'P-1033', name: 'William Turner',  age: 48, gender: 'Male',   condition: 'Depression',        status: 'Stable',   time: '2:30 PM',  doctor: 'Dr. Priya Nair',   lastVisit: 'Apr 05, 2025', nextAppointment: 'May 19, 2025', bloodType: 'A+',  phone: '(555) 010-1929', email: 'wturner@email.com'     },
       { id: 'P-1032', name: 'Jennifer Adams',  age: 37, gender: 'Female', condition: 'Thyroid Disorder',  status: 'Stable',   time: '4:30 PM',  doctor: 'Dr. Susan Lee',    lastVisit: 'Mar 28, 2025', nextAppointment: 'Jun 01, 2025', bloodType: 'O+',  phone: '(555) 111-2030', email: 'jadams@email.com'      },
       { id: 'P-1031', name: 'Charles Brown',   age: 55, gender: 'Male',   condition: 'COPD',              status: 'Critical', time: '10:00 AM', doctor: 'Dr. James Hooper', lastVisit: 'Apr 30, 2025', nextAppointment: 'May 03, 2025', bloodType: 'B+',  phone: '(555) 212-3141', email: 'cbrown@email.com'      },
+    ]
+  },
+
+  async getMonthlyTrend(): Promise<MonthlyTrend[]> {
+    await delay(800)
+    return [
+      { month: 'Nov', patients: 198, appointments: 142 },
+      { month: 'Dec', patients: 212, appointments: 158 },
+      { month: 'Jan', patients: 245, appointments: 189 },
+      { month: 'Feb', patients: 228, appointments: 172 },
+      { month: 'Mar', patients: 267, appointments: 211 },
+      { month: 'Apr', patients: 289, appointments: 224 },
+      { month: 'May', patients: 312, appointments: 247 },
+    ]
+  },
+
+  async getAppointmentsByDay(): Promise<DailyAppointments[]> {
+    await delay(600)
+    return [
+      { day: 'Mon', count: 18 },
+      { day: 'Tue', count: 24 },
+      { day: 'Wed', count: 21 },
+      { day: 'Thu', count: 27 },
+      { day: 'Fri', count: 22 },
+      { day: 'Sat', count: 9  },
+      { day: 'Sun', count: 4  },
     ]
   },
 }
