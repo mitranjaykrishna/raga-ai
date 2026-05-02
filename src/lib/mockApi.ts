@@ -18,6 +18,17 @@ export type DailyAppointments = {
   count: number
 }
 
+export type Vitals = {
+  patientId: string
+  heartRate: number
+  systolic: number
+  diastolic: number
+  spO2: number
+  temperature: number
+  respiratoryRate: number
+  recordedAt: string
+}
+
 export type Patient = {
   id: string
   name: string
@@ -86,6 +97,24 @@ export const mockApi = {
       { day: 'Fri', count: 22 },
       { day: 'Sat', count: 9  },
       { day: 'Sun', count: 4  },
+    ]
+  },
+
+  async getVitals(): Promise<Vitals[]> {
+    await delay(750)
+    return [
+      { patientId: 'P-1042', heartRate: 88,  systolic: 145, diastolic: 92,  spO2: 97, temperature: 98.6, respiratoryRate: 16, recordedAt: '5 min ago'  },
+      { patientId: 'P-1041', heartRate: 114, systolic: 168, diastolic: 102, spO2: 91, temperature: 100.2, respiratoryRate: 24, recordedAt: '2 min ago'  },
+      { patientId: 'P-1040', heartRate: 76,  systolic: 116, diastolic: 74,  spO2: 93, temperature: 98.4, respiratoryRate: 26, recordedAt: '8 min ago'  },
+      { patientId: 'P-1039', heartRate: 56,  systolic: 138, diastolic: 86,  spO2: 96, temperature: 98.1, respiratoryRate: 14, recordedAt: '3 min ago'  },
+      { patientId: 'P-1038', heartRate: 82,  systolic: 112, diastolic: 70,  spO2: 99, temperature: 98.8, respiratoryRate: 17, recordedAt: '10 min ago' },
+      { patientId: 'P-1037', heartRate: 68,  systolic: 124, diastolic: 78,  spO2: 98, temperature: 97.8, respiratoryRate: 15, recordedAt: '6 min ago'  },
+      { patientId: 'P-1036', heartRate: 94,  systolic: 136, diastolic: 88,  spO2: 97, temperature: 99.4, respiratoryRate: 19, recordedAt: '4 min ago'  },
+      { patientId: 'P-1035', heartRate: 106, systolic: 154, diastolic: 96,  spO2: 94, temperature: 99.8, respiratoryRate: 22, recordedAt: '1 min ago'  },
+      { patientId: 'P-1034', heartRate: 74,  systolic: 144, diastolic: 90,  spO2: 97, temperature: 98.3, respiratoryRate: 16, recordedAt: '7 min ago'  },
+      { patientId: 'P-1033', heartRate: 66,  systolic: 118, diastolic: 76,  spO2: 99, temperature: 98.0, respiratoryRate: 14, recordedAt: '9 min ago'  },
+      { patientId: 'P-1032', heartRate: 78,  systolic: 110, diastolic: 68,  spO2: 98, temperature: 97.9, respiratoryRate: 15, recordedAt: '11 min ago' },
+      { patientId: 'P-1031', heartRate: 122, systolic: 162, diastolic: 100, spO2: 88, temperature: 101.6, respiratoryRate: 28, recordedAt: '30 sec ago' },
     ]
   },
 }
